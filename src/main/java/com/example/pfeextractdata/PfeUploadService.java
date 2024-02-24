@@ -15,10 +15,10 @@ import java.util.Objects;
 
 
 public class PfeUploadService {
-    public static int  nbrUser=209;
+    public static int  nbrUser=1000;
     public static String userTotal="C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\user\\AuserData.csv";
 
-    public String urlfile = "C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\user\\user_";
+    public String urlfile = "C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\user\\user_3000\\user_";
     public static String cheminFichierExcel="C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\dataaaaaaa.xlsx";
     public static Sheet sheet_1 ;
     public static Sheet sheet_2 ;
@@ -66,7 +66,6 @@ public class PfeUploadService {
     }
 
     private void finTrajectoireAndEnregister(String userIdChercher) throws IOException {
-        System.out.println("******************************"+userIdChercher);
         String local;
         ++nbrUser;
         String userfile = urlfile+nbrUser+".csv";
@@ -76,12 +75,11 @@ public class PfeUploadService {
                 String[] entetes = {"Latitude", "Longitude"};
                 writer.writeNext(entetes);
 
-                System.out.println("====bien lu file =====");
+                System.out.println("==== Construire user ===== : "+nbrUser);
                 // Supposons que le fichier Excel a une seule feuille de calcul, si ce n'est pas le cas, ajustez en conséquence.
                 Sheet sheetTmp = null;
-
+                int verified=0;
                 for (int i=0;i<2;i++){
-                    System.out.println("**************************Shet ******"+i);
                     if(i==1){
                         sheetTmp=sheet_1;
                     }
@@ -89,36 +87,42 @@ public class PfeUploadService {
                     else{
                         sheetTmp=sheet_2;
                     }
-                    System.out.println("______________________Parcourir toutes les lignes de la feuille de calcul");
+                    System.out.println("sheet :"+i);
                     // Parcourir toutes les lignes de la feuille de calcul
                     for (Row row : sheetTmp) {
-                        if(row.getCell(0).getStringCellValue()!=null
-                                && Objects.equals(row.getCell(1).getStringCellValue(), userIdChercher)){
+                        try {
+                            if(row.getCell(0).getStringCellValue() !=null
+                                    && Objects.equals(row.getCell(1).getStringCellValue(), userIdChercher)){
 
-                            local=row.getCell(0).getStringCellValue();
-                            String[] keys = local.split("/");
-                            // Écrire les en-têtes si nécessaire
-                            if(keys.length==2){
-                                System.out.println("key : "+keys.length);
-                                System.out.println(keys[0]+"-----"+keys[1] );
-                                String[] ligne = {keys[0], keys[1]};
-                                writer.writeNext(ligne);
+                                local=row.getCell(0).getStringCellValue();
+                                String[] keys = local.split("/");
+                                // Écrire les en-têtes si nécessaire
+                                if(keys.length==2){
+                                    // System.out.println("key : "+keys.length);
+                                    //System.out.println(keys[0]+"-----"+keys[1] );
+                                    verified++;
+                                    String[] ligne = {keys[0], keys[1]};
+                                    writer.writeNext(ligne);
+                                }
+
                             }
-
-
                         }
+                        catch ( NullPointerException e){
+                            //System.out.println(e);
+                        }
+
 
                     }
 
                 }
-
+            if (verified==0){
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! "+nbrUser);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
     }
-
 
 }
