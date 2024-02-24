@@ -15,7 +15,7 @@ import java.util.Objects;
 
 
 public class PfeUploadService {
-    public static int  nbrUser=1000;
+    public static int  nbrUser=1500;
     public static String userTotal="C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\user\\AuserData.csv";
 
     public String urlfile = "C:\\Users\\E L I T E B O O K\\Desktop\\file git\\PfeExtractData\\src\\main\\java\\com\\example\\pfeextractdata\\user\\user_3000\\user_";
